@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Kasir</title>
+	<!-- memanggil CSS dari Bootstrap -->
+	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+</head>
+<body>
+	<div class="container mt-5">
+		<h2>APLIKASI KASIR</h2>
+		<div class="row mt-3">
+			<div class="col-md-6">
+				<h4>Daftar Barang</h4>
+				<table class="table table-striped table-bordered">
+					<thead>
+						<tr>
+							<th>Nama Barang</th>
+							<th>Harga</th>
+							<th>Stok</th>
+							<th>Aksi</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Indomie</td>
+							<td>2000</td>
+							<td>10</td>
+							<td><button class="btn btn-sm btn-primary" onclick="tambah('Indomie', 2000)">Beli</button></td>
+						</tr>
+						<tr>
+							<td>Mie Sedap</td>
+							<td>2500</td>
+							<td>5</td>
+							<td><button class="btn btn-sm btn-primary" onclick="tambah('Mie Sedap', 2500)">Beli</button></td>
+						</tr>
+						<tr>
+							<td>Sari Roti</td>
+							<td>4000</td>
+							<td>8</td>
+							<td><button class="btn btn-sm btn-primary" onclick="tambah('Sari Roti', 4000)">Beli</button></td>
+						</tr>
+                        <tr>
+							<td>Samsu</td>
+							<td>20000</td>
+							<td>8</td>
+							<td><button class="btn btn-sm btn-primary" onclick="tambah('samsu', 20000)">Beli</button></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-md-6">
+				<h4>Keranjang Belanja</h4>
+				<table class="table table-striped table-bordered">
+					<thead>
+						<tr>
+							<th>Nama Barang</th>
+							<th>Harga</th>
+							<th>Jumlah</th>
+							<th>Subtotal</th>
+						</tr>
+					</thead>
+					<tbody id="keranjang"></tbody>
+					<tfoot>
+						<tr>
+							<th colspan="3">Total</th>
+							<th id="total">0</th>
+						</tr>
+					</tfoot>
+				</table>
+				<button class="btn btn-lg btn-success float-right" onclick="bayar()">Bayar</button>
+			</div>
+		</div>
+	</div>
+	<!-- memanggil JavaScript -->
+	<script type="text/javascript">
+		// deklarasi variabel
+		var keranjang = [];
+
+		// fungsi untuk menambah barang ke keranjang belanja
+		function tambah(nama, harga) {
+			// mencari apakah barang sudah ada di keranjang
+			var index = -1;
+			for (var i = 0; i < keranjang.length; i++) {
+				if (keranjang[i].nama == nama) {
+					index = i;
+					break;
+				}
+			}
+
+			// jika barang sudah ada di keranjang, tambahkan jumlahnya
+			if (index >= 0)
+            {
+keranjang[index].jumlah++;
+keranjang[index].subtotal = keranjang[index].jumlah * harga;
+} else { // jika barang belum ada di keranjang, tambahkan ke keranjang
+var item = {
+nama: nama,
+harga: harga,
+jumlah: 1,
+subtotal: harga
+};
+keranjang.push(item);
+}// menampilkan keranjang belanja
+var html = "";
+		var total = 0;
+		for (var i = 0; i < keranjang.length; i++) {
+			html += "<tr>";
+			html += "<td>" + keranjang[i].nama + "</td>";
+			html += "<td>" + keranjang[i].harga + "</td>";
+			html += "<td>" + keranjang[i].jumlah + "</td>";
+			html += "<td>" + keranjang[i].subtotal + "</td>";
+			html += "</tr>";
+			total += keranjang[i].subtotal;
+		}
+		document.getElementById("keranjang").innerHTML = html;
+		document.getElementById("total").innerHTML = total;
+	}
+
+	// fungsi untuk melakukan pembayaran
+	function bayar() {
+		// mengecek apakah keranjang belanja kosong
+		if (keranjang.length == 0) {
+			alert("Keranjang belanja kosong");
+			return;
+		}
+
+		// menghitung total pembayaran
+		var total = 0;
+		for (var i = 0; i < keranjang.length; i++) {
+			total += keranjang[i].subtotal;
+		}
+
+		// menampilkan total pembayaran
+		alert("Total pembayaran: " + total);
+
+		// mengosongkan keranjang belanja
+		keranjang = [];
+		document.getElementById("keranjang").innerHTML = "";
+		document.getElementById("total").innerHTML = 0;
+	}
+</script>
+</body>
+</html>
